@@ -1,10 +1,10 @@
-# 🎯 Career Track Hub
+# Career Track Hub
 
 A full-stack Django web application for managing internship and job applications. Built by **Shubham Chaudhari** as a term project.
 
 ---
 
-## ✨ Features
+## Features
 
 - **User Authentication** — Register, login, logout with per-user data isolation
 - **Add Applications** — Company, position, job type, location, salary, deadline, recruiter info
@@ -19,7 +19,7 @@ A full-stack Django web application for managing internship and job applications
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 career_track_hub/
@@ -44,7 +44,7 @@ career_track_hub/
 
 ---
 
-## 🚀 Local Setup (Step-by-Step)
+## Local Setup (Step-by-Step)
 
 ### Prerequisites
 - Python 3.10+
@@ -206,7 +206,7 @@ heroku open
 
 ---
 
-## 🔒 Production Security Checklist
+## Production Security Checklist
 
 - [ ] Change `SECRET_KEY` to a long random string (50+ chars)
 - [ ] Set `DEBUG = False`
@@ -222,7 +222,7 @@ python -c "import secrets; print(secrets.token_urlsafe(50))"
 
 ---
 
-## 🗄️ Database — Switching to PostgreSQL (Production)
+## Database — Switching to PostgreSQL (Production)
 
 ```bash
 pip install psycopg2-binary
@@ -244,7 +244,7 @@ DATABASES = {
 
 ---
 
-## 📦 GitHub Setup
+## GitHub Setup
 
 ```bash
 git init
@@ -257,7 +257,7 @@ git push -u origin main
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -272,7 +272,7 @@ git push -u origin main
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Shubham Chaudhari**  
 Career Track Hub — Term Project
