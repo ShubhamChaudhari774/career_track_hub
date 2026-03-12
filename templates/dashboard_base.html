@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🎯</div>
+      <div>
+        <div class="logo-text">Career Track Hub</div>
+        <div class="logo-sub">Application Manager</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="{% url 'dashboard' %}" class="nav-item">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a href="{% url 'application_list' %}" class="nav-item">
+        <span class="nav-icon">📋</span> All Applications
+      </a>
+      <a href="{% url 'application_create' %}" class="nav-item">
+        <span class="nav-icon">➕</span> Add Application
+      </a>
+      <a href="{% url 'search' %}" class="nav-item">
+        <span class="nav-icon">🔍</span> Search
+      </a>
+
+      <div class="nav-section-label" style="margin-top:1rem">Account</div>
+      <a href="/admin/" class="nav-item">
+        <span class="nav-icon">⚙️</span> Admin Panel
+      </a>
+      <a href="{% url 'logout' %}" class="nav-item">
+        <span class="nav-icon">🚪</span> Sign Out
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="user-avatar">{{ request.user.first_name.0|upper }}{{ request.user.last_name.0|upper }}</div>
+        <div>
+          <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+          <div class="user-email">{{ request.user.email }}</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+    {% block topbar %}{% endblock %}
+    <div class="page-body">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

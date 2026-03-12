@@ -1,0 +1,15 @@
+[Unit]
+Description=gunicorn daemon for career_track_hub
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/career_track_hub
+ExecStart=/home/ubuntu/miniconda3/envs/dj_web/bin/gunicorn \
+          --workers 3 \
+          --bind 127.0.0.1:8000 \
+          career_track_hub.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

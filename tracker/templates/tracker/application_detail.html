@@ -1,0 +1,81 @@
+{% extends "dashboard_base.html" %}
+{% block title %}{{ app.company_name }} — Career Track Hub{% endblock %}
+
+{% block topbar %}
+<div class="topbar">
+  <div class="topbar-title">
+    <h1>{{ app.company_name }}</h1>
+    <p>{{ app.position_title }} · {{ app.get_job_type_display }}</p>
+  </div>
+  <div class="topbar-actions">
+    <a href="{% url 'application_list' %}" class="btn btn-ghost">← Back</a>
+    <a href="{% url 'application_update' app.pk %}" class="btn btn-secondary">✏️ Edit</a>
+    <a href="{% url 'application_delete' app.pk %}" class="btn btn-danger">🗑️ Delete</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="detail-grid">
+
+  <!-- Left: Main info -->
+  <div>
+    <div class="card mb-2">
+      <div class="card-header">
+        <div class="card-title">📋 Application Details</div>
+        <span class="badge badge-{{ app.get_status_color }}">{{ app.get_status_display }}</span>
+      </div>
+      <div class="detail-row"><div class="detail-label">Company</div><div class="detail-value fw-bold">{{ app.company_name }}</div></div>
+      <div class="detail-row"><div class="detail-label">Position</div><div class="detail-value">{{ app.position_title }}</div></div>
+      <div class="detail-row"><div class="detail-label">Job Type</div><div class="detail-value">{{ app.get_job_type_display }}</div></div>
+      <div class="detail-row"><div class="detail-label">Work Mode</div><div class="detail-value">{{ app.get_location_display }}</div></div>
+      {% if app.job_location_city %}<div class="detail-row"><div class="detail-label">City</div><div class="detail-value">{{ app.job_location_city }}</div></div>{% endif %}
+      {% if app.salary_range %}<div class="detail-row"><div class="detail-label">Salary</div><div class="detail-value text-success">{{ app.salary_range }}</div></div>{% endif %}
+      {% if app.job_posting_url %}<div class="detail-row"><div class="detail-label">Job Posting</div><div class="detail-value"><a href="{{ app.job_posting_url }}" target="_blank" class="text-accent">View Posting ↗</a></div></div>{% endif %}
+    </div>
+
+    <div class="card mb-2">
+      <div class="card-title mb-1">📅 Timeline</div>
+      <div class="detail-row"><div class="detail-label">Date Applied</div><div class="detail-value">{{ app.date_applied|date:"F j, Y" }}</div></div>
+      {% if app.application_deadline %}<div class="detail-row"><div class="detail-label">Deadline</div><div class="detail-value text-warning">{{ app.application_deadline|date:"F j, Y" }}</div></div>{% endif %}
+      {% if app.next_interview_date %}<div class="detail-row"><div class="detail-label">Interview</div><div class="detail-value text-accent">{{ app.next_interview_date|date:"F j, Y g:i A" }}</div></div>{% endif %}
+      <div class="detail-row"><div class="detail-label">Priority</div>
+        <div class="detail-value"><span class="badge badge-{% if app.priority == 'high' %}red{% elif app.priority == 'medium' %}yellow{% else %}green{% endif %}">{{ app.get_priority_display }}</span></div>
+      </div>
+      <div class="detail-row"><div class="detail-label">Last Updated</div><div class="detail-value text-muted">{{ app.updated_at|date:"F j, Y g:i A" }}</div></div>
+    </div>
+
+    {% if app.notes %}
+    <div class="card">
+      <div class="card-title mb-1">📝 Notes</div>
+      <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.7;white-space:pre-wrap;">{{ app.notes }}</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Right: Recruiter -->
+  <div>
+    <div class="card mb-2">
+      <div class="card-title mb-1">👤 Recruiter</div>
+      {% if app.recruiter_name or app.recruiter_email or app.recruiter_phone %}
+        {% if app.recruiter_name  %}<div class="detail-row"><div class="detail-label">Name</div><div class="detail-value">{{ app.recruiter_name }}</div></div>{% endif %}
+        {% if app.recruiter_email %}<div class="detail-row"><div class="detail-label">Email</div><div class="detail-value"><a href="mailto:{{ app.recruiter_email }}" class="text-accent">{{ app.recruiter_email }}</a></div></div>{% endif %}
+        {% if app.recruiter_phone %}<div class="detail-row"><div class="detail-label">Phone</div><div class="detail-value">{{ app.recruiter_phone }}</div></div>{% endif %}
+      {% else %}
+        <p class="text-muted" style="font-size:0.83rem;">No recruiter info saved.</p>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <div class="card-title mb-1">⚡ Quick Actions</div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+        <a href="{% url 'application_update' app.pk %}" class="btn btn-secondary" style="justify-content:center;">✏️ Edit Application</a>
+        {% if app.job_posting_url %}<a href="{{ app.job_posting_url }}" target="_blank" class="btn btn-secondary" style="justify-content:center;">🔗 View Job Posting</a>{% endif %}
+        {% if app.recruiter_email %}<a href="mailto:{{ app.recruiter_email }}" class="btn btn-secondary" style="justify-content:center;">📧 Email Recruiter</a>{% endif %}
+        <a href="{% url 'application_delete' app.pk %}" class="btn btn-danger" style="justify-content:center;">🗑️ Delete Application</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

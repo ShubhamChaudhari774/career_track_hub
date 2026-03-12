@@ -1,0 +1,103 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Applications — Career Track Hub{% endblock %}
+
+{% block topbar %}
+<div class="topbar">
+  <div class="topbar-title">
+    <h1>All Applications</h1>
+    <p>{{ total_count }} application{{ total_count|pluralize }} found</p>
+  </div>
+  <div class="topbar-actions">
+    <a href="{% url 'search' %}" class="btn btn-secondary">🔍 Search</a>
+    <a href="{% url 'application_create' %}" class="btn btn-primary">➕ Add New</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <form method="get" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+    <select name="status" onchange="this.form.submit()">
+      <option value="">All Statuses</option>
+      {% for val, label in status_choices %}
+        <option value="{{ val }}" {% if current_status == val %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="job_type" onchange="this.form.submit()">
+      <option value="">All Types</option>
+      {% for val, label in type_choices %}
+        <option value="{{ val }}" {% if current_type == val %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="location" onchange="this.form.submit()">
+      <option value="">All Locations</option>
+      {% for val, label in location_choices %}
+        <option value="{{ val }}" {% if current_location == val %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="sort" onchange="this.form.submit()">
+      <option value="-date_applied" {% if current_sort == '-date_applied' %}selected{% endif %}>Newest First</option>
+      <option value="date_applied"  {% if current_sort == 'date_applied' %}selected{% endif %}>Oldest First</option>
+      <option value="company_name"  {% if current_sort == 'company_name' %}selected{% endif %}>Company A–Z</option>
+      <option value="-company_name" {% if current_sort == '-company_name' %}selected{% endif %}>Company Z–A</option>
+      <option value="status"        {% if current_sort == 'status' %}selected{% endif %}>Status</option>
+      <option value="priority"      {% if current_sort == 'priority' %}selected{% endif %}>Priority</option>
+    </select>
+
+    {% if current_status or current_type or current_location %}
+      <a href="{% url 'application_list' %}" class="btn btn-ghost btn-sm">✕ Clear Filters</a>
+    {% endif %}
+  </form>
+</div>
+
+<!-- Table -->
+{% if applications %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>Position</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Applied</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for app in applications %}
+      <tr data-href="{% url 'application_detail' app.pk %}">
+        <td class="td-primary">{{ app.company_name }}</td>
+        <td>{{ app.position_title }}</td>
+        <td>{{ app.get_job_type_display }}</td>
+        <td>{{ app.get_location_display }}</td>
+        <td><span class="badge badge-{{ app.get_status_color }}">{{ app.get_status_display }}</span></td>
+        <td><span class="badge badge-{% if app.priority == 'high' %}red{% elif app.priority == 'medium' %}yellow{% else %}green{% endif %}">{{ app.get_priority_display }}</span></td>
+        <td>{{ app.date_applied|date:"M j, Y" }}</td>
+        <td class="td-actions" onclick="event.stopPropagation()">
+          <a href="{% url 'application_detail' app.pk %}" class="btn btn-ghost btn-sm">View</a>
+          <a href="{% url 'application_update' app.pk %}" class="btn btn-ghost btn-sm">Edit</a>
+          <a href="{% url 'application_delete' app.pk %}" class="btn btn-danger btn-sm">Del</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">📭</div>
+  <h3>No applications found</h3>
+  <p>{% if current_status or current_type or current_location %}Try removing some filters.{% else %}Start tracking your first application!{% endif %}</p>
+  <a href="{% url 'application_create' %}" class="btn btn-primary">➕ Add Application</a>
+</div>
+{% endif %}
+
+{% endblock %}

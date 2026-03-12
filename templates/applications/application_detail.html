@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}{{ application.position_title }} at {{ application.company_name }} — Career Track Hub{% endblock %}
+
+{% block content %}
+<div class="detail-page">
+    <div class="detail-header">
+        <a href="{% url 'dashboard' %}" class="back-link">← Back to Dashboard</a>
+        <div class="detail-title-row">
+            <div class="company-avatar-lg">{{ application.company_name|first }}</div>
+            <div>
+                <h1>{{ application.position_title }}</h1>
+                <p class="company-name-lg">{{ application.company_name }}</p>
+            </div>
+            <span class="status-badge status-{{ application.status }} status-lg">{{ application.get_status_display }}</span>
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-main">
+            <div class="detail-card">
+                <h3>Job Details</h3>
+                <div class="detail-rows">
+                    <div class="detail-row">
+                        <span class="detail-label">Type</span>
+                        <span>{{ application.get_job_type_display }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Work Mode</span>
+                        <span>{{ application.get_location_type_display }}</span>
+                    </div>
+                    {% if application.location %}
+                    <div class="detail-row">
+                        <span class="detail-label">Location</span>
+                        <span>{{ application.location }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="detail-row">
+                        <span class="detail-label">Date Applied</span>
+                        <span>{{ application.date_applied|date:"F d, Y" }}</span>
+                    </div>
+                    {% if application.salary_range %}
+                    <div class="detail-row">
+                        <span class="detail-label">Compensation</span>
+                        <span>{{ application.salary_range }}</span>
+                    </div>
+                    {% endif %}
+                    {% if application.job_url %}
+                    <div class="detail-row">
+                        <span class="detail-label">Job Posting</span>
+                        <a href="{{ application.job_url }}" target="_blank" class="link">View Posting →</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if application.notes %}
+            <div class="detail-card">
+                <h3>Notes</h3>
+                <p class="notes-text">{{ application.notes|linebreaks }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="detail-sidebar">
+            {% if application.recruiter_name or application.recruiter_email %}
+            <div class="detail-card">
+                <h3>Recruiter</h3>
+                {% if application.recruiter_name %}
+                <p><strong>{{ application.recruiter_name }}</strong></p>
+                {% endif %}
+                {% if application.recruiter_email %}
+                <a href="mailto:{{ application.recruiter_email }}" class="link">{{ application.recruiter_email }}</a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="detail-card">
+                <h3>Timeline</h3>
+                <div class="detail-rows">
+                    <div class="detail-row">
+                        <span class="detail-label">Added</span>
+                        <span>{{ application.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Updated</span>
+                        <span>{{ application.updated_at|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-actions">
+                <a href="{% url 'edit_application' application.pk %}" class="btn btn-primary btn-full">Edit Application</a>
+                <a href="{% url 'delete_application' application.pk %}" class="btn btn-danger btn-full">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

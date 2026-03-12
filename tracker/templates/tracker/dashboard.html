@@ -1,0 +1,150 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Dashboard — Career Track Hub{% endblock %}
+
+{% block topbar %}
+<div class="topbar">
+  <div class="topbar-title">
+    <h1>Dashboard</h1>
+    <p>Welcome back, {{ request.user.first_name|default:request.user.username }}! Here's your application overview.</p>
+  </div>
+  <div class="topbar-actions">
+    <a href="{% url 'application_create' %}" class="btn btn-primary">➕ Add Application</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<!-- Stats Row -->
+<div class="stats-grid mb-2">
+  <div class="stat-card" style="--stat-color: var(--accent)">
+    <div class="stat-label">Total Applications</div>
+    <div class="stat-value">{{ total }}</div>
+    <div class="stat-sub">all time</div>
+    <div class="stat-icon">📋</div>
+  </div>
+  <div class="stat-card" style="--stat-color: var(--warning)">
+    <div class="stat-label">Active Pipeline</div>
+    <div class="stat-value">{{ active }}</div>
+    <div class="stat-sub">in progress</div>
+    <div class="stat-icon">🔄</div>
+  </div>
+  <div class="stat-card" style="--stat-color: var(--success)">
+    <div class="stat-label">Offers</div>
+    <div class="stat-value">{{ offers }}</div>
+    <div class="stat-sub">received or accepted</div>
+    <div class="stat-icon">🎉</div>
+  </div>
+  <div class="stat-card" style="--stat-color: var(--purple)">
+    <div class="stat-label">Response Rate</div>
+    <div class="stat-value">{{ response_rate }}%</div>
+    <div class="stat-sub">of applications</div>
+    <div class="stat-icon">📈</div>
+  </div>
+  <div class="stat-card" style="--stat-color: var(--danger)">
+    <div class="stat-label">Rejected</div>
+    <div class="stat-value">{{ rejected }}</div>
+    <div class="stat-sub">keep going!</div>
+    <div class="stat-icon">💪</div>
+  </div>
+</div>
+
+<div class="grid-2">
+
+  <!-- Upcoming Interviews -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🗓️ Upcoming Interviews</div>
+      <a href="{% url 'application_list' %}" class="btn btn-ghost btn-sm">View All</a>
+    </div>
+    {% if upcoming %}
+    <div>
+      {% for app in upcoming %}
+      <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--border);">
+        <div style="flex-shrink:0;width:44px;height:44px;background:var(--accent-glow);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🏢</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:0.875rem;color:var(--text-primary);">{{ app.company_name }}</div>
+          <div style="font-size:0.78rem;color:var(--text-secondary);">{{ app.position_title }}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:0.78rem;font-weight:600;color:var(--accent);">{{ app.next_interview_date|date:"M j" }}</div>
+          <div style="font-size:0.7rem;color:var(--text-muted);">{{ app.next_interview_date|date:"g:i A" }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state" style="padding:2rem;">
+      <div class="empty-icon">📭</div>
+      <p>No upcoming interviews scheduled.</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Recent Applications -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🕐 Recent Applications</div>
+      <a href="{% url 'application_list' %}" class="btn btn-ghost btn-sm">View All</a>
+    </div>
+    {% if recent %}
+    <div>
+      {% for app in recent %}
+      <a href="{% url 'application_detail' app.pk %}" style="display:flex;align-items:center;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--border);text-decoration:none;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:0.875rem;color:var(--text-primary);">{{ app.company_name }}</div>
+          <div style="font-size:0.78rem;color:var(--text-secondary);">{{ app.position_title }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+          <span class="badge badge-{{ app.get_status_color }}">{{ app.get_status_display }}</span>
+          <span style="font-size:0.7rem;color:var(--text-muted);">{{ app.date_applied|date:"M j, Y" }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state" style="padding:2rem;">
+      <div class="empty-icon">📂</div>
+      <p>No applications yet. <a href="{% url 'application_create' %}" class="text-accent">Add your first one!</a></p>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- High Priority -->
+{% if high_priority %}
+<div class="card mt-2">
+  <div class="card-header">
+    <div class="card-title">🔴 High Priority — Follow Up Needed</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Position</th>
+          <th>Status</th>
+          <th>Applied</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for app in high_priority %}
+        <tr data-href="{% url 'application_detail' app.pk %}">
+          <td class="td-primary">{{ app.company_name }}</td>
+          <td>{{ app.position_title }}</td>
+          <td><span class="badge badge-{{ app.get_status_color }}">{{ app.get_status_display }}</span></td>
+          <td>{{ app.date_applied|date:"M j, Y" }}</td>
+          <td class="td-actions">
+            <a href="{% url 'application_update' app.pk %}" class="btn btn-ghost btn-sm">Edit</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

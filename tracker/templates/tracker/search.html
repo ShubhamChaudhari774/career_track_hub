@@ -1,0 +1,82 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Search — Career Track Hub{% endblock %}
+
+{% block topbar %}
+<div class="topbar">
+  <div class="topbar-title">
+    <h1>Search Applications</h1>
+    <p>{% if query %}{{ count }} result{{ count|pluralize }} for "{{ query }}"{% else %}Search across all your applications{% endif %}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="card mb-2">
+  <form method="get">
+    <div class="form-grid-2" style="margin-bottom:0.75rem;">
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">Search Keyword</label>
+        {{ form.q }}
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">Status</label>
+        {{ form.status }}
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">Job Type</label>
+        {{ form.job_type }}
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">Work Location</label>
+        {{ form.location }}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">🔍 Search</button>
+    {% if query or request.GET.status or request.GET.job_type or request.GET.location %}
+      <a href="{% url 'search' %}" class="btn btn-secondary">✕ Clear</a>
+    {% endif %}
+  </form>
+</div>
+
+{% if request.GET %}
+  {% if results %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Position</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Applied</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for app in results %}
+        <tr data-href="{% url 'application_detail' app.pk %}">
+          <td class="td-primary">{{ app.company_name }}</td>
+          <td>{{ app.position_title }}</td>
+          <td>{{ app.get_job_type_display }}</td>
+          <td><span class="badge badge-{{ app.get_status_color }}">{{ app.get_status_display }}</span></td>
+          <td>{{ app.date_applied|date:"M j, Y" }}</td>
+          <td class="td-actions" onclick="event.stopPropagation()">
+            <a href="{% url 'application_detail' app.pk %}" class="btn btn-ghost btn-sm">View</a>
+            <a href="{% url 'application_update' app.pk %}" class="btn btn-ghost btn-sm">Edit</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h3>No results found</h3>
+    <p>Try different keywords or clear your filters.</p>
+  </div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

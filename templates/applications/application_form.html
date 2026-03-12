@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — Career Track Hub{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="form-page-header">
+        <a href="{% url 'dashboard' %}" class="back-link">← Back to Dashboard</a>
+        <h1>{{ title }}</h1>
+        {% if application %}
+        <p class="muted">Editing: {{ application.position_title }} at {{ application.company_name }}</p>
+        {% else %}
+        <p class="muted">Fill in the details below to track a new application</p>
+        {% endif %}
+    </div>
+
+    <div class="form-card">
+        <form method="post" class="app-form">
+            {% csrf_token %}
+
+            <div class="form-section">
+                <h3 class="section-title">Job Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_company_name">Company Name *</label>
+                        {{ form.company_name }}
+                        {% if form.company_name.errors %}<span class="field-error">{{ form.company_name.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_position_title">Position Title *</label>
+                        {{ form.position_title }}
+                        {% if form.position_title.errors %}<span class="field-error">{{ form.position_title.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row form-row-3">
+                    <div class="form-group">
+                        <label for="id_job_type">Job Type *</label>
+                        {{ form.job_type }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_location_type">Work Mode *</label>
+                        {{ form.location_type }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_location">Location</label>
+                        {{ form.location }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_date_applied">Date Applied *</label>
+                        {{ form.date_applied }}
+                        {% if form.date_applied.errors %}<span class="field-error">{{ form.date_applied.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_status">Application Status *</label>
+                        {{ form.status }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_job_url">Job Posting URL</label>
+                    {{ form.job_url }}
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">Recruiter & Compensation</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_recruiter_name">Recruiter Name</label>
+                        {{ form.recruiter_name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_recruiter_email">Recruiter Email</label>
+                        {{ form.recruiter_email }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_salary_range">Salary / Compensation Range</label>
+                    {{ form.salary_range }}
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">Notes</h3>
+                <div class="form-group">
+                    <label for="id_notes">Notes & Reminders</label>
+                    {{ form.notes }}
+                    <small class="field-hint">Add interview dates, prep notes, follow-up reminders, etc.</small>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'dashboard' %}" class="btn btn-ghost">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    {% if application %}Save Changes{% else %}Add Application{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

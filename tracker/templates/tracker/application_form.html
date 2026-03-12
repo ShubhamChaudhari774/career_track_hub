@@ -1,0 +1,120 @@
+{% extends "dashboard_base.html" %}
+{% block title %}{{ title }} — Career Track Hub{% endblock %}
+
+{% block topbar %}
+<div class="topbar">
+  <div class="topbar-title">
+    <h1>{{ title }}</h1>
+    <p>{% if action == 'Add' %}Log a new job or internship application{% else %}Update application details for {{ app.company_name }}{% endif %}</p>
+  </div>
+  <div class="topbar-actions">
+    <a href="{% url 'application_list' %}" class="btn btn-secondary">← Back to List</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div style="max-width:820px;">
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Core Info -->
+    <div class="card mb-2">
+      <div class="form-section">📋 Job Details</div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Company Name *</label>
+          {{ form.company_name }}
+          {% if form.company_name.errors %}<ul class="errorlist">{% for e in form.company_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Position Title *</label>
+          {{ form.position_title }}
+          {% if form.position_title.errors %}<ul class="errorlist">{% for e in form.position_title.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Job Type</label>
+          {{ form.job_type }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Work Location</label>
+          {{ form.location }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">City / State</label>
+          {{ form.job_location_city }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Salary Range</label>
+          {{ form.salary_range }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Job Posting URL</label>
+          {{ form.job_posting_url }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="card mb-2">
+      <div class="form-section">📅 Application Status</div>
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label">Date Applied *</label>
+          {{ form.date_applied }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Application Deadline</label>
+          {{ form.application_deadline }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          {{ form.status }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Priority</label>
+          {{ form.priority }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Next Interview Date/Time</label>
+          {{ form.next_interview_date }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Recruiter -->
+    <div class="card mb-2">
+      <div class="form-section">👤 Recruiter Contact</div>
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label">Recruiter Name</label>
+          {{ form.recruiter_name }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Recruiter Email</label>
+          {{ form.recruiter_email }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Recruiter Phone</label>
+          {{ form.recruiter_phone }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="card mb-2">
+      <div class="form-section">📝 Notes</div>
+      <div class="form-group">
+        <label class="form-label">Notes & Reminders</label>
+        {{ form.notes }}
+        <div class="form-hint">Interview notes, follow-up reminders, key contacts, anything else relevant.</div>
+      </div>
+    </div>
+
+    <div class="flex-center gap-2">
+      <button type="submit" class="btn btn-primary btn-lg">{{ action }} Application</button>
+      <a href="{% url 'application_list' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

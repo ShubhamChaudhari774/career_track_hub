@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Career Track Hub — Organize Your Job Search{% endblock %}
+
+{% block body %}
+<div class="landing-page">
+  <nav class="landing-nav">
+    <div class="flex-center gap-1">
+      <span style="font-size:1.4rem">🎯</span>
+      <span style="font-weight:800;font-size:1rem">Career Track Hub</span>
+    </div>
+    <div class="flex-center gap-2">
+      <a href="{% url 'login' %}" class="btn btn-ghost">Sign In</a>
+      <a href="{% url 'register' %}" class="btn btn-primary">Get Started →</a>
+    </div>
+  </nav>
+
+  <section class="landing-hero">
+    <div class="hero-eyebrow">✨ Free · No credit card required</div>
+    <h1 class="hero-title">
+      Never lose track of<br>
+      a <span class="highlight">job application</span> again
+    </h1>
+    <p class="hero-subtitle">
+      Career Track Hub is your centralized command center for managing every internship and job application — track status, interviews, deadlines, and recruiter contacts all in one place.
+    </p>
+    <div class="hero-cta">
+      <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Create Free Account</a>
+      <a href="{% url 'login' %}" class="btn btn-secondary btn-lg">Sign In</a>
+    </div>
+  </section>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <div class="feature-title">Track Everything</div>
+      <div class="feature-desc">Log company, position, job type, location, status, salary, deadline and recruiter details in one form.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <div class="feature-title">Powerful Search</div>
+      <div class="feature-desc">Instantly find applications by company name, job title, status, type, or any keyword you remember.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Live Dashboard</div>
+      <div class="feature-desc">See your pipeline at a glance — active applications, upcoming interviews, offer count, and response rate.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔔</div>
+      <div class="feature-title">Interview Alerts</div>
+      <div class="feature-desc">Log upcoming interview dates and see them front-and-center on your dashboard so you never miss one.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">Private & Secure</div>
+      <div class="feature-desc">Your data belongs to you. Each account is completely isolated with full authentication and CSRF protection.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">☁️</div>
+      <div class="feature-title">Cloud Deployed</div>
+      <div class="feature-desc">Built with Django and ready to deploy on AWS or Google Cloud so your data is available anywhere.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:3rem 2rem;border-top:1px solid var(--border);color:var(--text-muted);font-size:0.8rem;">
+    Built by Shubham Chaudhari · Career Track Hub · Django + SQLite
+  </div>
+</div>
+{% endblock %}

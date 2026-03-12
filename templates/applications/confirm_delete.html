@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Delete Application — Career Track Hub{% endblock %}
+
+{% block content %}
+<div class="confirm-page">
+    <div class="confirm-card">
+        <div class="confirm-icon">🗑️</div>
+        <h2>Delete this application?</h2>
+        <p>You're about to permanently delete:</p>
+        <div class="confirm-target">
+            <strong>{{ application.position_title }}</strong> at <strong>{{ application.company_name }}</strong>
+        </div>
+        <p class="muted">This action cannot be undone.</p>
+        <div class="confirm-actions">
+            <a href="{% url 'dashboard' %}" class="btn btn-ghost">Cancel</a>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

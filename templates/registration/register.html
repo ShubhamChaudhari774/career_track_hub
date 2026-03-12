@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Create Account — Career Track Hub{% endblock %}
+
+{% block body %}
+<div class="auth-page">
+  <div class="auth-card" style="max-width:500px">
+    <div class="auth-logo">
+      <div class="logo-icon">🎯</div>
+      <h1>Create your account</h1>
+      <p>Start tracking your applications for free</p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          {{ form.first_name }}
+          {% if form.first_name.errors %}<ul class="errorlist">{% for e in form.first_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          {{ form.last_name }}
+          {% if form.last_name.errors %}<ul class="errorlist">{% for e in form.last_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}<ul class="errorlist">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        {{ form.email }}
+        {% if form.email.errors %}<ul class="errorlist">{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          {{ form.password1 }}
+          {% if form.password1.errors %}<ul class="errorlist">{% for e in form.password1.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          {{ form.password2 }}
+          {% if form.password2.errors %}<ul class="errorlist">{% for e in form.password2.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+      </div>
+
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}<div class="alert alert-error">{{ error }}</div>{% endfor %}
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Create Account →</button>
+    </form>
+
+    <div class="auth-footer">
+      Already have an account? <a href="{% url 'login' %}">Sign in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
