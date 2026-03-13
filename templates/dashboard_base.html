@@ -1,8 +1,83 @@
 {% extends "base.html" %}
 {% block body %}
+
+<!-- ═══════════════════════════════════════
+     MOBILE TOP BAR (visible only on mobile)
+     ═══════════════════════════════════════ -->
+<div class="mobile-topbar">
+  <div class="flex-center gap-1">
+    <span style="font-size:1.3rem;">🎯</span>
+    <span style="font-weight:800;font-size:0.95rem;">Career Track Hub</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE OVERLAY (dark backdrop)
+     ═══════════════════════════════════════ -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE DRAWER (slides in from left)
+     ═══════════════════════════════════════ -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="sidebar-logo" style="justify-content:space-between;">
+    <div class="flex-center gap-1">
+      <div class="logo-icon">🎯</div>
+      <div>
+        <div class="logo-text">Career Track Hub</div>
+        <div class="logo-sub">Application Manager</div>
+      </div>
+    </div>
+    <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close menu">✕</button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="{% url 'dashboard' %}" class="nav-item">
+      <span class="nav-icon">📊</span> Dashboard
+    </a>
+    <a href="{% url 'application_list' %}" class="nav-item">
+      <span class="nav-icon">📋</span> All Applications
+    </a>
+    <a href="{% url 'application_create' %}" class="nav-item">
+      <span class="nav-icon">➕</span> Add Application
+    </a>
+    <a href="{% url 'search' %}" class="nav-item">
+      <span class="nav-icon">🔍</span> Search
+    </a>
+
+    <div class="nav-section-label" style="margin-top:1rem">Account</div>
+    <a href="/admin/" class="nav-item">
+      <span class="nav-icon">⚙️</span> Admin Panel
+    </a>
+    <form method="post" action="{% url 'logout' %}" style="margin:0;">
+      {% csrf_token %}
+      <button type="submit" class="nav-item" style="width:100%;background:none;border:none;cursor:pointer;text-align:left;">
+        <span class="nav-icon">🚪</span> Sign Out
+      </button>
+    </form>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-pill">
+      <div class="user-avatar">{{ request.user.first_name.0|upper }}{{ request.user.last_name.0|upper }}</div>
+      <div>
+        <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+        <div class="user-email">{{ request.user.email }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MAIN DESKTOP LAYOUT
+     ═══════════════════════════════════════ -->
 <div class="layout">
 
-  <!-- Sidebar -->
+  <!-- Desktop Sidebar (hidden on mobile) -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-icon">🎯</div>
@@ -32,10 +107,10 @@
         <span class="nav-icon">⚙️</span> Admin Panel
       </a>
       <form method="post" action="{% url 'logout' %}" style="margin:0;">
-    {% csrf_token %}
-    <button type="submit" class="nav-item" style="width:100%;background:none;border:none;cursor:pointer;text-align:left;">
-        <span class="nav-icon">🚪</span> Sign Out
-    </button>
+        {% csrf_token %}
+        <button type="submit" class="nav-item" style="width:100%;background:none;border:none;cursor:pointer;text-align:left;">
+          <span class="nav-icon">🚪</span> Sign Out
+        </button>
       </form>
     </nav>
 
@@ -50,7 +125,7 @@
     </div>
   </aside>
 
-  <!-- Main -->
+  <!-- Main Content -->
   <div class="main-content">
     {% block topbar %}{% endblock %}
     <div class="page-body">
