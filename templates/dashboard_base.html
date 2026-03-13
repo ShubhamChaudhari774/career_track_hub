@@ -31,9 +31,12 @@
       <a href="/admin/" class="nav-item">
         <span class="nav-icon">⚙️</span> Admin Panel
       </a>
-      <a href="{% url 'logout' %}" class="nav-item">
+      <form method="post" action="{% url 'logout' %}" style="margin:0;">
+    {% csrf_token %}
+    <button type="submit" class="nav-item" style="width:100%;background:none;border:none;cursor:pointer;text-align:left;">
         <span class="nav-icon">🚪</span> Sign Out
-      </a>
+    </button>
+      </form>
     </nav>
 
     <div class="sidebar-footer">
